@@ -45,43 +45,33 @@ class HRDiagram extends React.Component {
     return { x: posX, y: posY };
   }
 
+  fitToContainer(canvas) {
+    canvas.style.width='100%';
+    canvas.style.height='100%';
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+
   componentDidMount() {
     const canvas = this.gradient.current;
+    this.fitToContainer(canvas);
     const context = canvas.getContext('2d');
-    const background = context.createLinearGradient(0, 0, 260, 0);
-    const parentWidth = canvas.parentElement.clientWidth;
-    const parentHeight = canvas.parentElement.clientHeight;
-
+    const background = context.createLinearGradient(0, 0, 300, 0);
     background.addColorStop(0, '#61c9fc');
-    background.addColorStop(.35, 'white');
+    background.addColorStop(.4, '#ffffff');
     background.addColorStop(.7, '#fffea1');
     background.addColorStop(.9, '#fe9b02');
     background.addColorStop(1, '#fc0c00');
     context.fillStyle = background;
-    context.fillRect(0, 0, parentWidth, parentHeight);
+    context.fillRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
   }
-
-  // componentDidUpdate() {
-  //   const canvas = this.gradient.current;
-  //   const context = canvas.getContext('2d');
-  //   const background = context.createLinearGradient(0, 0, 260, 0);
-
-
-  //   background.addColorStop(0, '#61c9fc');
-  //   background.addColorStop(.35, 'white');
-  //   background.addColorStop(.7, '#fffea1');
-  //   background.addColorStop(.9, '#fe9b02');
-  //   background.addColorStop(1, '#fc0c00');
-  //   context.fillStyle = background;
-  //   context.fillRect(0, 0, 400, 200);
-  // }
 
   handleClick(event) {
     const location = this.getClickPosition(event);
     const context = this.gradient.current.getContext('2d');
     const colorData = context.getImageData(location.x, location.y, 1, 1).data;
     const [r, g, b] = colorData;
-    const color = this.rgbToHex(r, g, b);
+    const color = `#${this.rgbToHex(r, g, b)}`;
     const result = { color, location };
     this.props.onDiagramClick(result);
   }
@@ -92,7 +82,7 @@ class HRDiagram extends React.Component {
         <canvas
           className="hr-gradient"
           ref={this.gradient}
-          onMouseMove={this.handleClick}
+          onClick={this.handleClick}
         ></canvas>
       </div>
     );

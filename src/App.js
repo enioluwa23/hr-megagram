@@ -1,7 +1,7 @@
-/* eslint-disable no-console */
 import React from 'react';
 import './App.css';
 import HRDiagram from './components/HRDiagram';
+import StarView from './components/StarView';
 
 class App extends React.Component {
   constructor(props) {
@@ -13,10 +13,37 @@ class App extends React.Component {
     };
 
     this.handleClick = this.handleClick.bind(this);
+    this.renderStar = this.renderStar.bind(this);
   }
 
   handleClick(data) {
     this.setState({ clickLocation: data.location, color: data.color });
+  }
+
+  renderStar() {
+    const { color, clickLocation } = this.state;
+    if (!color || !clickLocation) {
+      return null;
+    }
+    const { x, y } = clickLocation;
+    const xInt = parseInt(x);
+    const yInt = 400 - parseInt(y);
+    const diameter = xInt + yInt;
+    const temperature = xInt;
+    const luminosity = yInt;
+    const starClass = 'O';
+    const mass = 1000;
+
+    const props = {
+      color,
+      diameter,
+      temperature,
+      luminosity,
+      starClass,
+      mass,
+    };
+
+    return <StarView {...props}/>;
   }
 
   render() {
@@ -25,11 +52,7 @@ class App extends React.Component {
         <HRDiagram
           onDiagramClick={this.handleClick}
         />
-        <div width="300" height="300" style={{ backgroundColor: 'teal' }}>
-          {this.state.clickLocation &&
-          <p>{`x=${this.state.clickLocation.x} y=${this.state.clickLocation.y}`}</p>}
-          <p>{this.state.color}</p>
-        </div>
+        {this.state.color && this.renderStar()}
       </div>
     );
   }

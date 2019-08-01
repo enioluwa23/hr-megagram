@@ -1,4 +1,5 @@
 .App {
+  position: relative;
   display: flex;
   flex-direction: row;
   color: white;
@@ -22,11 +23,18 @@
   height: 1rem;
 }
 
-.hr-gradient {
-  width: 100%;
-  height: 100%;
+.star-view {
+  width: 25rem;
+  color: black;
 }
 
-.color-palette {
-  background-color: red;
+.star-visual {
+  border-radius:50%;
+  -moz-border-radius:50%;
+  -webkit-border-radius:50%;
 }
+
+/* .hr-gradient {
+  width: 100%;
+  height: 100%;
+} */
