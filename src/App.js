@@ -3,20 +3,36 @@ import React from 'react';
 import './App.css';
 import HRDiagram from './components/HRDiagram';
 
-export const App = () => {
-  const handleColorChange = ({ hex }) => console.log(hex);
+class App extends React.Component {
+  constructor(props) {
+    super(props);
 
-  return (
-    <div className="App">
-      <HRDiagram
-        color={{ h: 200,
-          s: 0.50,
-          l: 0.20,
-          a: 1 }}
-        onChangeComplete={ handleColorChange }
-      />
-    </div>
-  );
+    this.state = {
+      clickLocation: null,
+      color: null,
+    };
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(data) {
+    this.setState({ clickLocation: data.location, color: data.color });
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <HRDiagram
+          onDiagramClick={this.handleClick}
+        />
+        <div width="300" height="300" style={{ backgroundColor: 'teal' }}>
+          {this.state.clickLocation &&
+          <p>{`x=${this.state.clickLocation.x} y=${this.state.clickLocation.y}`}</p>}
+          <p>{this.state.color}</p>
+        </div>
+      </div>
+    );
+  }
 };
 
 export default App;
