@@ -32,16 +32,14 @@ class StarView extends React.Component {
               backgroundColor: color,
               width: diameter,
               height: diameter,
-              boxShadow: `0 0 5px 3px rgba(${r},${g},${b},0.5)`,
+              boxShadow: `0 0 5px 5px rgba(${r},${g},${b},0.5)`,
             }}/>
         </Card.Header>
         <Card.Body>
           <Card.Title>{`${starClass}-Class Star`}</Card.Title>
-          <Card.Text>
-            <p key="luminosity">{`Luminosity: ${luminosity}`}</p>
-            <p key="temperature">{`Temperature: ${temperature}`}</p>
-            <p key="mass">{`Mass: ${mass}`}</p>
-          </Card.Text>
+          <Card.Text key="luminosity">{`Luminosity: ${luminosity}`}</Card.Text>
+          <Card.Text key="temperature">{`Temperature: ${temperature}`}</Card.Text>
+          <Card.Text key="mass">{`Mass: ${mass}`}</Card.Text>
         </Card.Body>
       </Card>
     );

@@ -6,6 +6,7 @@ class HRDiagram extends React.Component {
     super(props);
 
     this.gradient = React.createRef();
+    this.drawGradient = this.drawGradient.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.getCanvasPosition = this.getCanvasPosition.bind(this);
     this.getClickPosition = this.getClickPosition.bind(this);
@@ -50,13 +51,15 @@ class HRDiagram extends React.Component {
     canvas.style.height='100%';
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
+    return { width: canvas.width, height: canvas.height };
   }
 
-  componentDidMount() {
+  drawGradient() {
     const canvas = this.gradient.current;
-    this.fitToContainer(canvas);
+    const { width } = this.fitToContainer(canvas);
+    const gradientStop = width / 1.5;
     const context = canvas.getContext('2d');
-    const background = context.createLinearGradient(0, 0, 300, 0);
+    const background = context.createLinearGradient(0, 0, gradientStop, 0);
     background.addColorStop(0, '#61c9fc');
     background.addColorStop(.4, '#ffffff');
     background.addColorStop(.7, '#fffea1');
@@ -66,13 +69,22 @@ class HRDiagram extends React.Component {
     context.fillRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
   }
 
+  componentDidMount() {
+    this.drawGradient();
+    window.addEventListener('resize', this.drawGradient);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.drawGradient);
+  }
+
   handleClick(event) {
     const location = this.getClickPosition(event);
     const context = this.gradient.current.getContext('2d');
     const colorData = context.getImageData(location.x, location.y, 1, 1).data;
     const [r, g, b] = colorData;
     const color = `#${this.rgbToHex(r, g, b)}`;
-    const result = { color, location };
+    const result = { color, location, width: this.gradient.current.width };
     this.props.onDiagramClick(result);
   }
 
@@ -82,8 +94,8 @@ class HRDiagram extends React.Component {
         <canvas
           className="hr-gradient"
           ref={this.gradient}
-          onClick={this.handleClick}
-        ></canvas>
+          onClick={this.handleClick}>
+        </canvas>
       </div>
     );
   }

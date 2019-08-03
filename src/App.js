@@ -10,6 +10,7 @@ class App extends React.Component {
     this.state = {
       clickLocation: null,
       color: null,
+      scale: null,
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -17,19 +18,29 @@ class App extends React.Component {
   }
 
   handleClick(data) {
-    this.setState({ clickLocation: data.location, color: data.color });
+    this.setState({
+      clickLocation: data.location,
+      color: data.color,
+      scale: data.width,
+    });
   }
 
   renderStar() {
-    const { color, clickLocation } = this.state;
+    const { color, clickLocation, scale } = this.state;
     if (!color || !clickLocation) {
       return null;
     }
+
+    /**
+     * Let class determine temperature and wthin that class do calc
+     * Get class (starting point, length) for O, B, A, F, G, K, M
+     */
+
     const { x, y } = clickLocation;
-    const xInt = parseInt(x);
-    const yInt = 400 - parseInt(y);
-    const diameter = xInt + yInt;
-    const temperature = xInt;
+    const xInt = scale - parseInt(x);
+    const yInt = scale - parseInt(y);
+    const diameter = 0.5 * (xInt + 2 * yInt) + 50;
+    const temperature = 1000 + Math.pow(xInt, 1.5);
     const luminosity = yInt;
     const starClass = 'O';
     const mass = 1000;
@@ -49,10 +60,14 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <HRDiagram
-          onDiagramClick={this.handleClick}
-        />
-        {this.state.color && this.renderStar()}
+        <div className="diagram-container ">
+          <HRDiagram
+            onDiagramClick={this.handleClick}
+          />
+        </div>
+        <div className="star-container">
+          {this.state.color && this.renderStar()}
+        </div>
       </div>
     );
   }

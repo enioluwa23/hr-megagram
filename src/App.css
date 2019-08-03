@@ -1,17 +1,28 @@
 .App {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem;
+}
+
+.diagram-container {
   position: relative;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: left;
   color: white;
-  padding: 1rem;
-  min-width: 100vw;
+  width: 50%;
+  min-height: 40vh;
 }
 
 .hr-diagram {
   height: 25rem;
   width: 25rem;
   border: 2px solid black;
-}
+} 
 
 .hr-pointer {
   transform: translate(-50%, -.5rem);
@@ -24,7 +35,7 @@
 }
 
 .star-view {
-  width: 25rem;
+  width: 100%;
   color: black;
 }
 
