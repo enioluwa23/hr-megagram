@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card } from 'react-bootstrap';
+import { Media } from 'react-bootstrap';
 
 class StarView extends React.Component {
   handleClick(data) {
@@ -16,32 +16,41 @@ class StarView extends React.Component {
     return { r, b, g };
   }
 
+  numberToBase10Exponent(numStr) {
+    const num = parseFloat(numStr);
+    const [coefficient, exponent] = num.toExponential().split('e').map((item) => parseFloat(item));
+    return { coefficient, exponent };
+  }
+
   render() {
     const { color, diameter, starClass, luminosity, temperature, mass } = this.props;
     const { r, g, b } = this.hexToRgb(color.slice(1));
+    let { coefficient, exponent } = this.numberToBase10Exponent(luminosity);
+    coefficient = coefficient.toString().slice(0, 4);
+
     return (
-      <Card className="star-view">
-        <Card.Header
+      <Media className="star-view">
+        <div className="star-visual"
+          style={{
+            backgroundColor: color,
+            width: diameter,
+            height: diameter,
+            boxShadow: `0 0 5px 5px rgba(${r},${g},${b},0.5)`,
+          }}/>
+        <Media.Body>
+          {/* <Card.Header
           style={{
             display: 'flex',
             justifyContent: 'center',
             backgroundColor: 'black',
-          }}>
-          <div className="star-visual"
-            style={{
-              backgroundColor: color,
-              width: diameter,
-              height: diameter,
-              boxShadow: `0 0 5px 5px rgba(${r},${g},${b},0.5)`,
-            }}/>
-        </Card.Header>
-        <Card.Body>
-          <Card.Title>{`${starClass}-Class Star`}</Card.Title>
-          <Card.Text key="luminosity">{`Luminosity: ${luminosity}`}</Card.Text>
-          <Card.Text key="temperature">{`Temperature: ${temperature}`}</Card.Text>
-          <Card.Text key="mass">{`Mass: ${mass}`}</Card.Text>
-        </Card.Body>
-      </Card>
+          }}> */}
+          {/* </Card.Header> */}
+          <h5>{`${starClass}-Class Star`}</h5>
+          <p key="luminosity">{`Luminosity: ${coefficient} x `}10<sup>{exponent}</sup></p>
+          <p key="temperature">{`Temperature: ${temperature}`}</p>
+          <p key="mass">{`Mass: ${mass}`}</p>
+        </Media.Body>
+      </Media>
     );
   }
 };

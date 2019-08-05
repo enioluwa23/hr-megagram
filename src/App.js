@@ -37,11 +37,11 @@ class App extends React.Component {
      */
 
     const { x, y } = clickLocation;
-    const xInt = scale - parseInt(x);
+    const xInt = parseInt(x);
     const yInt = scale - parseInt(y);
-    const diameter = 0.5 * (xInt + 2 * yInt) + 50;
-    const temperature = 1000 + Math.pow(xInt, 1.5);
-    const luminosity = yInt;
+    const diameter = 0.6 * (0.4 * xInt + yInt) + 25;
+    const temperature = 1000;
+    const luminosity = Math.pow(10, -5.25 + (11.5 * (yInt / scale)));
     const starClass = 'O';
     const mass = 1000;
 
@@ -60,7 +60,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <div className="diagram-container ">
+        <div className="diagram-container">
           <HRDiagram
             onDiagramClick={this.handleClick}
           />

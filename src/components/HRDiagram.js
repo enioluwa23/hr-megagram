@@ -57,14 +57,15 @@ class HRDiagram extends React.Component {
   drawGradient() {
     const canvas = this.gradient.current;
     const { width } = this.fitToContainer(canvas);
-    const gradientStop = width / 1.5;
+    const gradientStop = width / 1.1;
     const context = canvas.getContext('2d');
     const background = context.createLinearGradient(0, 0, gradientStop, 0);
-    background.addColorStop(0, '#61c9fc');
-    background.addColorStop(.4, '#ffffff');
-    background.addColorStop(.7, '#fffea1');
-    background.addColorStop(.9, '#fe9b02');
-    background.addColorStop(1, '#fc0c00');
+    background.addColorStop(0, '#16348e');
+    background.addColorStop(.4, '#61c9fc');
+    background.addColorStop(.6, '#ffffff');
+    background.addColorStop(.75, '#fae729');
+    background.addColorStop(.9, '#fa6c0a');
+    background.addColorStop(1.0, '#fc0c00');
     context.fillStyle = background;
     context.fillRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
   }
