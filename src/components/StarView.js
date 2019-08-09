@@ -47,7 +47,7 @@ class StarView extends React.Component {
           {/* </Card.Header> */}
           <h5>{`${starClass}-Class Star`}</h5>
           <p key="luminosity">{`Luminosity: ${coefficient} x `}10<sup>{exponent}</sup></p>
-          <p key="temperature">{`Temperature: ${temperature}`}</p>
+          <p key="temperature">{`Temperature: ${temperature}K`}</p>
           <p key="mass">{`Mass: ${mass}`}</p>
         </Media.Body>
       </Media>
