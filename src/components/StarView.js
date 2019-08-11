@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Media } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 
 class StarView extends React.Component {
   handleClick(data) {
@@ -29,28 +29,31 @@ class StarView extends React.Component {
     coefficient = coefficient.toString().slice(0, 4);
 
     return (
-      <Media className="star-view">
-        <div className="star-visual"
-          style={{
-            backgroundColor: color,
-            width: diameter,
-            height: diameter,
-            boxShadow: `0 0 5px 5px rgba(${r},${g},${b},0.5)`,
-          }}/>
-        <Media.Body>
-          {/* <Card.Header
+      <Card className="star-view">
+        <Card.Header
           style={{
             display: 'flex',
             justifyContent: 'center',
             backgroundColor: 'black',
-          }}> */}
-          {/* </Card.Header> */}
-          <h5>{`${starClass}-Class Star`}</h5>
-          <p key="luminosity">{`Luminosity: ${coefficient} x `}10<sup>{exponent}</sup></p>
-          <p key="temperature">{`Temperature: ${temperature}K`}</p>
-          <p key="mass">{`Mass: ${mass}`}</p>
-        </Media.Body>
-      </Media>
+          }}>
+          <div className="star-visual"
+            style={{
+              backgroundColor: color,
+              width: diameter,
+              height: diameter,
+              boxShadow: `0 0 5px 5px rgba(${r},${g},${b},0.5)`,
+            }}/>
+        </Card.Header>
+        <Card.Body>
+          <Card.Title>{`${starClass} Star`}</Card.Title>
+          <Card.Text key="mass"><strong>Mass: </strong>{`${mass}M`}<sub>☉</sub>
+          </Card.Text>
+          <Card.Text key="luminosity"><strong>Luminosity: </strong>{`${coefficient} x `}10<sup>{exponent}</sup>L<sub>☉</sub>
+          </Card.Text>
+          <Card.Text key="temperature"><strong>Temperature: </strong>{`${temperature}K`}
+          </Card.Text>
+        </Card.Body>
+      </Card>
     );
   }
 };

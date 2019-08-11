@@ -14,7 +14,9 @@ class App extends React.Component {
     };
 
     this.getStarClass = this.getStarClass.bind(this);
+    this.getStarMass = this.getStarMass.bind(this);
     this.getStarLuminosity = this.getStarLuminosity.bind(this);
+    this.getStarTemperature = this.getStarTemperature.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.renderStar = this.renderStar.bind(this);
   }
@@ -32,30 +34,53 @@ class App extends React.Component {
     return Math.pow(10, -5.05 + (11.4 * (yLoc / scale)));
   }
 
-  _getStarClass(fraction, cutoff, range, luminosity) {
-    const mkClassName = Math.floor((fraction - cutoff) * ((79 * 9)/range) + 1).toString();
-    const lumClassName = 'V';
-    return mkClassName + lumClassName;
+  _getLuminosityClass(fractionY) {
+    if (fractionY < 45/142) {
+      return 'D';
+    } else if (fractionY < 59/142) {
+      return 'VI';
+    } else if (fractionY < 73/142) {
+      return 'V';
+    } else if (fractionY < 83/142) {
+      return 'IV';
+    } else if (fractionY < 92/142) {
+      return 'III';
+    } else if (fractionY < 102/142) {
+      return 'II';
+    } else if (fractionY < 116/142) {
+      return 'Ib';
+    } else if (fractionY < 132/142) {
+      return 'Ia';
+    } else {
+      return 'Ia-O';
+    }
   }
 
-  getStarClass(xLoc, luminosity) {
-    const { scale } = this.state;
-    const fraction = xLoc / scale;
+  _getStarClass(fractionX, fractionY, cutoff, range) {
+    const mkClass = Math.floor((fractionX - cutoff) * ((79 * 9)/range) + 1).toString();
+    const lumClass = this._getLuminosityClass(fractionY);
+    return lumClass === 'D'? lumClass + mkClass : mkClass + lumClass;
+  }
 
-    if (fraction < 18/79) {
-      return 'O' + this._getStarClass(fraction, 0, 18, luminosity);
-    } else if (fraction < 39/79) {
-      return 'B' + this._getStarClass(fraction, 18/79, 21, luminosity);
-    } else if (fraction < 46/79) {
-      return 'A' + this._getStarClass(fraction, 39/79, 7, luminosity);
-    } else if (fraction < 50/79) {
-      return 'F' + this._getStarClass(fraction, 46/79, 4, luminosity);
-    } else if (fraction < 58/79) {
-      return 'G' + this._getStarClass(fraction, 50/79, 8, luminosity);
-    } else if (fraction < 67/79) {
-      return 'K' + this._getStarClass(fraction, 58/79, 9, luminosity);
+  getStarClass(xLoc, yLoc) {
+    const { scale } = this.state;
+    const fractionX = xLoc / scale;
+    const fractionY = yLoc / scale;
+
+    if (fractionX < 18/79) {
+      return 'O' + this._getStarClass(fractionX, fractionY, 0, 18);
+    } else if (fractionX < 39/79) {
+      return 'B' + this._getStarClass(fractionX, fractionY, 18/79, 21);
+    } else if (fractionX < 46/79) {
+      return 'A' + this._getStarClass(fractionX, fractionY, 39/79, 7);
+    } else if (fractionX < 50/79) {
+      return 'F' + this._getStarClass(fractionX, fractionY, 46/79, 4);
+    } else if (fractionX < 58/79) {
+      return 'G' + this._getStarClass(fractionX, fractionY, 50/79, 8);
+    } else if (fractionX < 67/79) {
+      return 'K' + this._getStarClass(fractionX, fractionY, 58/79, 9);
     } else {
-      return 'M' + this._getStarClass(fraction, 67/79, 12, luminosity);
+      return 'M' + this._getStarClass(fractionX, fractionY, 67/79, 12);
     }
   }
 
@@ -86,8 +111,34 @@ class App extends React.Component {
     }
   }
 
+  _getStarMass(fractionY, base, range, min, maxIncrease) {
+    return min + ((fractionY - base) * (128/range) * maxIncrease);
+  }
+
   getStarMass(yLoc) {
-    return 1000;
+    const { scale } = this.state;
+    const fractionY = yLoc / scale;
+    if (fractionY < 30/128) {
+      return this._getStarMass(fractionY, 0, 30, 0, 0.1).toFixed(1);
+    } else if (fractionY < 40/128) {
+      return this._getStarMass(fractionY, 30/128, 10, 0.1, 0.2).toFixed(1);
+    } else if (fractionY < 56/128) {
+      return this._getStarMass(fractionY, 40/128, 12, 0.3, 0.7).toFixed(1);
+    } else if (fractionY < 64/128) {
+      return this._getStarMass(fractionY, 56/128, 8, 1, 0.5).toFixed(1);
+    } else if (fractionY < 79/128) {
+      return this._getStarMass(fractionY, 64/128, 15, 1.5, 1.5).toFixed(1);
+    } else if (fractionY < 89/128) {
+      return this._getStarMass(fractionY, 79/128, 10, 3.0, 3.0).toFixed(1);
+    } else if (fractionY < 100/128) {
+      return this._getStarMass(fractionY, 89/128, 11, 6.0, 4.0).toFixed(1);
+    } else if (fractionY < 117/128) {
+      return this._getStarMass(fractionY, 100/128, 17, 10.0, 20.0).toFixed(1);
+    } else if (fractionY < 122/128) {
+      return this._getStarMass(fractionY, 117/128, 5, 30.0, 60.0).toFixed(1);
+    } else {
+      return this._getStarMass(fractionY, 122/128, 6, 60.0, 240.0).toFixed(1);
+    }
   }
 
   renderStar() {
@@ -101,9 +152,9 @@ class App extends React.Component {
     const yInt = scale - parseInt(y);
     const diameter = 0.6 * (0.4 * xInt + yInt) + 25;
     const luminosity = this.getStarLuminosity(yInt);
-    const starClass = this.getStarClass(xInt, luminosity);
+    const starClass = this.getStarClass(xInt, yInt);
     const temperature = this.getStarTemperature(xInt, starClass);
-    const mass = this.getStarMass(yInt);
+    const mass = parseFloat(this.getStarMass(yInt));
 
     const props = {
       color,
