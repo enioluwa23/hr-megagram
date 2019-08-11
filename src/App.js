@@ -32,46 +32,37 @@ class App extends React.Component {
     return Math.pow(10, -5.05 + (11.4 * (yLoc / scale)));
   }
 
-  getStarClass(xLoc) {
+  _getStarClass(fraction, cutoff, range, luminosity) {
+    const mkClassName = Math.floor((fraction - cutoff) * ((79 * 9)/range) + 1).toString();
+    const lumClassName = 'V';
+    return mkClassName + lumClassName;
+  }
+
+  getStarClass(xLoc, luminosity) {
     const { scale } = this.state;
     const fraction = xLoc / scale;
 
     if (fraction < 18/79) {
-      const harvardClassName = 'O';
-      const mkClassName = Math.floor(fraction * ((79 * 9)/18) + 1).toString();
-      const lumClassName = 'V'; // (for now)
-      return harvardClassName + mkClassName + lumClassName;
+      return 'O' + this._getStarClass(fraction, 0, 18, luminosity);
     } else if (fraction < 39/79) {
-      const harvardClassName = 'B';
-      const mkClassName = Math.floor((fraction - 18/79) * ((79 * 9)/21) + 1).toString();
-      const lumClassName = 'V'; // (for now)
-      return harvardClassName + mkClassName + lumClassName;
+      return 'B' + this._getStarClass(fraction, 18/79, 21, luminosity);
     } else if (fraction < 46/79) {
-      const harvardClassName = 'A';
-      const mkClassName = Math.floor((fraction - 39/79) * ((79 * 9)/7) + 1).toString();
-      const lumClassName = 'V'; // (for now)
-      return harvardClassName + mkClassName + lumClassName;
+      return 'A' + this._getStarClass(fraction, 39/79, 7, luminosity);
     } else if (fraction < 50/79) {
-      const harvardClassName = 'F';
-      const mkClassName = Math.floor((fraction - 46/79) * ((79 * 9)/4) + 1).toString();
-      const lumClassName = 'V'; // (for now)
-      return harvardClassName + mkClassName + lumClassName;
+      return 'F' + this._getStarClass(fraction, 46/79, 4, luminosity);
     } else if (fraction < 58/79) {
-      const harvardClassName = 'G';
-      const mkClassName = Math.floor((fraction - 50/79) * ((79 * 9)/8) + 1).toString();
-      const lumClassName = 'V'; // (for now)
-      return harvardClassName + mkClassName + lumClassName;
+      return 'G' + this._getStarClass(fraction, 50/79, 8, luminosity);
     } else if (fraction < 67/79) {
-      const harvardClassName = 'K';
-      const mkClassName = Math.floor((fraction - 58/79) * ((79 * 9)/9) + 1).toString();
-      const lumClassName = 'V'; // (for now)
-      return harvardClassName + mkClassName + lumClassName;
+      return 'K' + this._getStarClass(fraction, 58/79, 9, luminosity);
     } else {
-      const harvardClassName = 'M';
-      const mkClassName = Math.floor((fraction - 67/79) * ((79 * 9)/12) + 1).toString();
-      const lumClassName = 'V'; // (for now)
-      return harvardClassName + mkClassName + lumClassName;
+      return 'M' + this._getStarClass(fraction, 67/79, 12, luminosity);
     }
+  }
+
+  _getStarTemperature(scale, xPos, base, range, min, maxIncrease) {
+    const offset = xPos - (base * scale);
+    const increase = maxIncrease * (offset /(range * scale));
+    return Math.round(min + increase);
   }
 
   getStarTemperature(xLoc, starClass) {
@@ -79,46 +70,19 @@ class App extends React.Component {
     const xPos = scale - xLoc;
 
     if (starClass.startsWith('O')) {
-      const base = 61/79 * scale;
-      const range = 18/79 * scale;
-      const offset = xPos - base;
-      const increase = 22000 * (offset / range);
-      return Math.round(28000 + increase);
+      return this._getStarTemperature(scale, xPos, 61/79, 18/79, 28000, 22000);
     } else if (starClass.startsWith('B')) {
-      const base = 40/79 * scale;
-      const range = 21/79 * scale;
-      const offset = xPos - base;
-      const increase = 18000 * (offset / range);
-      return Math.round(10000 + increase);
+      return this._getStarTemperature(scale, xPos, 40/79, 21/79, 10000, 18000);
     } else if (starClass.startsWith('A')) {
-      const base = 33/79 * scale;
-      const range = 7/79 * scale;
-      const offset = xPos - base;
-      const increase = 2500 * (offset / range);
-      return Math.round(7500 + increase);
+      return this._getStarTemperature(scale, xPos, 33/79, 7/79, 7500, 2500);
     } else if (starClass.startsWith('F')) {
-      const base = 29/79 * scale;
-      const range = 4/79 * scale;
-      const offset = xPos - base;
-      const increase = 1500 * (offset / range);
-      return Math.round(6000 + increase);
+      return this._getStarTemperature(scale, xPos, 29/79, 4/79, 6000, 1500);
     } else if (starClass.startsWith('G')) {
-      const base = 21/79 * scale;
-      const range = 8/79 * scale;
-      const offset = xPos - base;
-      const increase = 1000 * (offset / range);
-      return Math.round(5000 + increase);
+      return this._getStarTemperature(scale, xPos, 21/79, 8/79, 5000, 1000);
     } else if (starClass.startsWith('K')) {
-      const base = 12/79 * scale;
-      const range = 9/79 * scale;
-      const offset = xPos - base;
-      const increase = 1500 * (offset / range);
-      return Math.round(3500 + increase);
+      return this._getStarTemperature(scale, xPos, 12/79, 9/79, 3500, 1500);
     } else if (starClass.startsWith('M')) {
-      const range = 12/79 * scale;
-      const offset = xPos;
-      const increase = 2200 * (offset / range);
-      return Math.round(1300 + increase);
+      return this._getStarTemperature(scale, xPos, 0, 12/79, 1300, 2200);
     }
   }
 
@@ -137,7 +101,7 @@ class App extends React.Component {
     const yInt = scale - parseInt(y);
     const diameter = 0.6 * (0.4 * xInt + yInt) + 25;
     const luminosity = this.getStarLuminosity(yInt);
-    const starClass = this.getStarClass(xInt);
+    const starClass = this.getStarClass(xInt, luminosity);
     const temperature = this.getStarTemperature(xInt, starClass);
     const mass = this.getStarMass(yInt);
 
