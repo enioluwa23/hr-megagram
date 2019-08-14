@@ -59,7 +59,7 @@ class App extends React.Component {
   _getStarClass(fractionX, fractionY, cutoff, range) {
     const mkClass = Math.floor((fractionX - cutoff) * ((79 * 9)/range) + 1).toString();
     const lumClass = this._getLuminosityClass(fractionY);
-    return lumClass === 'D'? lumClass + mkClass : mkClass + lumClass;
+    return mkClass + lumClass;
   }
 
   getStarClass(xLoc, yLoc) {
@@ -141,6 +141,39 @@ class App extends React.Component {
     }
   }
 
+  getDescription(starClass) {
+    const mkClass = starClass.charAt(0);
+    const lumClass = starClass.slice(2);
+    let description = '';
+    switch (mkClass) {
+    case 'O': description += 'Blue'; break;
+    case 'B': description += 'Blue-White'; break;
+    case 'A': description += 'White'; break;
+    case 'F': description += 'Yellow-White'; break;
+    case 'G': description += 'Yellow'; break;
+    case 'K': description += 'Orange'; break;
+    case 'M': description += 'Red'; break;
+    default: break;
+    }
+
+    description += ' ';
+
+    switch (lumClass) {
+    case 'D':
+    case 'VI': description += 'Subdwarf'; break;
+    case 'V': description += 'Main-Sequence/Dwarf Star'; break;
+    case 'IV': description += 'Subgiant Star'; break;
+    case 'III': description += 'Giant Star'; break;
+    case 'II': description += 'Bright Giant'; break;
+    case 'Ib': description += 'Supergiant'; break;
+    case 'Ia': description += 'Luminous Supergiant'; break;
+    case 'Ia-O': description += 'Hypergiant'; break;
+    default: break;
+    }
+
+    return description;
+  }
+
   renderStar() {
     const { color, clickLocation, scale } = this.state;
     if (!color || !clickLocation) {
@@ -154,10 +187,12 @@ class App extends React.Component {
     const luminosity = this.getStarLuminosity(yInt);
     const starClass = this.getStarClass(xInt, yInt);
     const temperature = this.getStarTemperature(xInt, starClass);
+    const description = this.getDescription(starClass);
     const mass = parseFloat(this.getStarMass(yInt));
 
     const props = {
       color,
+      description,
       diameter,
       temperature,
       luminosity,

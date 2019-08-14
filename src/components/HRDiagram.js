@@ -1,9 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import HRPointer from './HRPointer';
 
 class HRDiagram extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      clickPosition: null,
+      color: '#444444',
+    };
 
     this.gradient = React.createRef();
     this.drawGradient = this.drawGradient.bind(this);
@@ -42,7 +48,7 @@ class HRDiagram extends React.Component {
     const { x, y } = this.getCanvasPosition();
     const posX = event.pageX - x;
     const posY = event.pageY - y;
-
+    this.setState({ clickPosition: { x: event.pageX - 10, y: event.pageY - 10 } });
     return { x: posX, y: posY };
   }
 
@@ -67,7 +73,7 @@ class HRDiagram extends React.Component {
     background.addColorStop(.9, '#fa6c0a');
     background.addColorStop(1.0, '#fc0c00');
     context.fillStyle = background;
-    context.fillRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
+    context.fillRect(0, 0, canvas.width, canvas.height);
   }
 
   componentDidMount() {
@@ -80,11 +86,14 @@ class HRDiagram extends React.Component {
   }
 
   handleClick(event) {
+    const canvas = this.gradient.current;
     const location = this.getClickPosition(event);
-    const context = this.gradient.current.getContext('2d');
-    const colorData = context.getImageData(location.x, location.y, 1, 1).data;
+    const { x, y } = location;
+    const context = canvas.getContext('2d');
+    const colorData = context.getImageData(x, y, 1, 1).data;
     const [r, g, b] = colorData;
     const color = `#${this.rgbToHex(r, g, b)}`;
+    this.setState({ color });
     const result = { color, location, width: this.gradient.current.width };
     this.props.onDiagramClick(result);
   }
@@ -97,6 +106,8 @@ class HRDiagram extends React.Component {
           ref={this.gradient}
           onClick={this.handleClick}>
         </canvas>
+        {this.state.clickPosition &&
+        <HRPointer position={this.state.clickPosition} color={this.state.color}/>}
       </div>
     );
   }

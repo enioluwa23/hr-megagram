@@ -23,19 +23,14 @@ class StarView extends React.Component {
   }
 
   render() {
-    const { color, diameter, starClass, luminosity, temperature, mass } = this.props;
+    const { color, description, diameter, starClass, luminosity, temperature, mass } = this.props;
     const { r, g, b } = this.hexToRgb(color.slice(1));
     let { coefficient, exponent } = this.numberToBase10Exponent(luminosity);
     coefficient = coefficient.toString().slice(0, 4);
 
     return (
       <Card className="star-view">
-        <Card.Header
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            backgroundColor: 'black',
-          }}>
+        <Card.Header className="star-visual-backdrop">
           <div className="star-visual"
             style={{
               backgroundColor: color,
@@ -44,13 +39,16 @@ class StarView extends React.Component {
               boxShadow: `0 0 5px 5px rgba(${r},${g},${b},0.5)`,
             }}/>
         </Card.Header>
-        <Card.Body>
+        <Card.Body className="star-info">
           <Card.Title>{`${starClass} Star`}</Card.Title>
+          <Card.Text key="description"><strong>Description: </strong>{description}</Card.Text>
           <Card.Text key="mass"><strong>Mass: </strong>{`${mass}M`}<sub>☉</sub>
           </Card.Text>
-          <Card.Text key="luminosity"><strong>Luminosity: </strong>{`${coefficient} x `}10<sup>{exponent}</sup>L<sub>☉</sub>
+          <Card.Text key="luminosity">
+            <strong>Luminosity: </strong>{`${coefficient} x `}10<sup>{exponent}</sup>L<sub>☉</sub>
           </Card.Text>
-          <Card.Text key="temperature"><strong>Temperature: </strong>{`${temperature}K`}
+          <Card.Text key="temperature">
+            <strong>Temperature: </strong>{`${temperature}K`}
           </Card.Text>
         </Card.Body>
       </Card>
@@ -60,6 +58,7 @@ class StarView extends React.Component {
 
 StarView.propTypes = {
   color: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
   diameter: PropTypes.number.isRequired,
   starClass: PropTypes.string.isRequired,
   luminosity: PropTypes.number.isRequired,

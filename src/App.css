@@ -36,13 +36,16 @@
 } 
 
 .hr-pointer {
+  position: absolute;
   transform: translate(-50%, -.5rem);
   background-color: red;
+  border: 1px solid black;
   border-radius:50%;
   -moz-border-radius:50%;
   -webkit-border-radius:50%;
-  width: 1rem;
-  height: 1rem;
+  width: .6rem;
+  height: .6rem;
+  z-index: 2;
 }
 
 .star-view {
@@ -50,6 +53,18 @@
   max-width: 40rem;
   margin: 0;
   color: black;
+  background-color: rgba(255, 255, 255, 0);
+  border-color: white !important;
+}
+
+.star-visual-backdrop {
+  display: flex !important;
+  justify-content: center !important;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.star-info {
+  background-color: white !important;
 }
 
 .star-visual {
