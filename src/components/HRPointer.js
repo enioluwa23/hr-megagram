@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export const HRPointer = (props) => {
-  console.log(props.position);
   return (
     <div
       className="hr-pointer"
@@ -16,7 +15,7 @@ export const HRPointer = (props) => {
 
 HRPointer.propTypes = {
   position: PropTypes.object.isRequired,
-  color: PropTypes.object.isRequired,
+  color: PropTypes.string.isRequired,
 };
 
 export default HRPointer;
