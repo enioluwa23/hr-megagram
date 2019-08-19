@@ -48,7 +48,7 @@ class HRDiagram extends React.Component {
     const { x, y } = this.getCanvasPosition();
     const posX = event.pageX - x;
     const posY = event.pageY - y;
-    this.setState({ clickPosition: { x: event.pageX - 10, y: event.pageY - 10 } });
+    this.setState({ clickPosition: { x: event.pageX - 5, y: event.pageY - y } });
     return { x: posX, y: posY };
   }
 
@@ -100,15 +100,17 @@ class HRDiagram extends React.Component {
 
   render() {
     return (
-      <div className="hr-diagram">
-        <canvas
-          className="hr-gradient"
-          ref={this.gradient}
-          onClick={this.handleClick}>
-        </canvas>
-        {this.state.clickPosition &&
+      <React.Fragment>
+        <div className="hr-diagram">
+          <canvas
+            className="hr-gradient"
+            ref={this.gradient}
+            onClick={this.handleClick}>
+          </canvas>
+          {this.state.clickPosition &&
         <HRPointer position={this.state.clickPosition} color={this.state.color}/>}
-      </div>
+        </div>
+      </React.Fragment>
     );
   }
 }

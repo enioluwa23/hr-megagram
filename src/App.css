@@ -8,6 +8,11 @@
   min-height: 100vh;
 }
 
+.title {
+  text-align: center;
+  color: white;
+}
+
 .diagram-container {
   position: relative;
   display: flex;
