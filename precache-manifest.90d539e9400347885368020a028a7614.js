@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "b1e7e826b7657a350bcbe6f5c27c7323",
+    "revision": "0c870a0628c6cbe64b42e64cd4a6f77a",
     "url": "/hr-megagram/index.html"
   },
   {
-    "revision": "d445d25450882a2b680e",
+    "revision": "845902087202981ba199",
     "url": "/hr-megagram/static/css/main.9056f04b.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/hr-megagram/static/js/2.738e2d7b.chunk.js"
   },
   {
-    "revision": "d445d25450882a2b680e",
-    "url": "/hr-megagram/static/js/main.3c277487.chunk.js"
+    "revision": "845902087202981ba199",
+    "url": "/hr-megagram/static/js/main.401a1de3.chunk.js"
   },
   {
     "revision": "3fc64aacf09b431ed70e",
