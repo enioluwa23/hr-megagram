@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "gh-pages": "^2.1.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.10",
@@ -11,6 +12,8 @@
     "react-scripts": "3.0.1"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -36,5 +39,6 @@
     "eslint-config-google": "^0.13.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-react": "^7.14.3"
-  }
+  },
+  "homepage": "https://enioluwa23.github.io/hr-megagram"
 }
