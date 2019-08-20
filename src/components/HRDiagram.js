@@ -48,7 +48,7 @@ class HRDiagram extends React.Component {
     const { x, y } = this.getCanvasPosition();
     const posX = event.pageX - x;
     const posY = event.pageY - y;
-    this.setState({ clickPosition: { x: event.pageX - 5, y: event.pageY - y } });
+    this.setState({ clickPosition: { x: event.pageX - 15, y: event.pageY - y + 5 } });
     return { x: posX, y: posY };
   }
 
