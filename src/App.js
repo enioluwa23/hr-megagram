@@ -206,7 +206,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <h1 className="title">HR Digaram Visualizer</h1>
+        <h1 className="title">HR Megagram</h1>
         <div className="diagram-container">
           <HRDiagram
             onDiagramClick={this.handleClick}
